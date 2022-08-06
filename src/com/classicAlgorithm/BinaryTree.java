@@ -3,7 +3,9 @@ package com.classicAlgorithm;
 
 import java.util.*;
 
+import apple.laf.JRSUIUtils;
 import com.leetCode.CommonStructure.TreeNode;
+import javafx.util.Pair;
 
 public class BinaryTree {
 	protected TreeNode root;
@@ -215,19 +217,72 @@ public class BinaryTree {
 	}
 	public static List<Integer>  inorderTraversal(TreeNode root) {
 	    Stack<TreeNode> stack = new Stack<TreeNode>();
-            List<Integer> res = new ArrayList<Integer>();
+		List<Integer> res = new ArrayList<Integer>();
 
-            while(root != null || !stack.isEmpty()){
-            	while(root!=null){       // 不断地向左结点深入，直至叶子结点
-               	    stack.push(root);
-                    root = root.left;
-            	}
-            	TreeNode top = stack.pop();
-            	res.add(top.val);
-            	root = top.right;
-            }	
-            return res;
+		while(root != null || !stack.isEmpty()){
+			while(root!=null){       // 不断地向左结点深入，直至叶子结点
+				stack.push(root);
+				root = root.left;
+			}
+			TreeNode top = stack.pop();
+			res.add(top.val);
+			root = top.right;
+		}
+		return res;
 	}
+
+	/**
+	 * 前序遍历：中，左，右
+	 * 中序遍历：左，中，右
+	 * 后序遍历：左，右，中
+	 *
+	 * 本题需要中序遍历。
+	 *
+	 * 栈是一种 先进后出的结构，出栈顺序为左，中，右
+	 * 那么入栈顺序必须调整为倒序，也就是右，中，左
+	 *
+	 * 同理，如果是前序遍历，入栈顺序为 右，左，中；后序遍历，入栈顺序中，右，左
+	 */
+	public static List<Integer> inorderTraversalNew(TreeNode root) {
+		List<Integer> ret = new ArrayList<>();
+		if (root == null) {
+			return ret;
+		}
+		int white = 0;
+		int grey = 1;
+		Stack<Pair<Integer, TreeNode>> s = new Stack<>();
+		s.add(new Pair(white, root));
+		while (s.size() > 0) {
+			Pair<Integer, TreeNode> p = s.pop();
+			int color = p.getKey();
+			TreeNode node = p.getValue();
+			if (node == null) {
+				continue;
+			}
+			if (color == white) {
+				s.add(new Pair<>(white, node.right));
+				s.add(new Pair<>(grey, node));
+				s.add(new Pair<>(white, node.left));
+			} else {
+				ret.add(node.val);
+			}
+		}
+		return ret;
+	}
+	public List<Integer> preorderTraversal(TreeNode root) {
+		List<Integer> ret = new ArrayList<>();
+		preOrder(root, ret);
+		return ret;
+	}
+	public static void preOrder(TreeNode root, List<Integer> ret){
+		if(root==null){
+			return;
+		}
+		ret.add(root.val);
+		preOrder(root.left, ret);
+		preOrder(root.right, ret);
+	}
+
 	private static  TreeNode init() {
 		TreeNode root = new TreeNode(1);
 		TreeNode node2 = new TreeNode(2);
@@ -280,6 +335,10 @@ public class BinaryTree {
 		System.out.println();
 		System.out.print("Post-Order4:");
 		iterativePostorder4(tree.getRoot());
+		System.out.println();
+		System.out.print("In-Order New:");
+		List<Integer> ret = inorderTraversalNew(tree.getRoot());
+		System.out.println(ret);
 		System.out.println();
 
 	}

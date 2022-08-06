@@ -1,5 +1,7 @@
 package com.classicAlgorithm;
 
+import java.util.Arrays;
+
 /**
  * 归并排序
  * 
@@ -44,12 +46,53 @@ public class MergeSort {
 		}
 	}
 
+
+	public int[] sortArray(int[] nums) {
+		if(nums.length == 1){
+			return nums;
+		}
+		return mergeSort(nums);
+	}
+	public int[] mergeSort(int[] nums){
+		if(nums.length <= 1){
+			return nums;
+		}
+		int pivot = nums.length / 2;
+		int[] left = Arrays.copyOfRange(nums, 0, pivot);
+		int[] right = Arrays.copyOfRange(nums, pivot, nums.length);
+
+		int[] leftSorted = mergeSort(left);
+		int[] rightSorted = mergeSort(right);
+
+		return mergeArray(leftSorted, rightSorted);
+	}
+	public int[] mergeArray(int[] leftSorted, int[] rightSorted){
+		int[] ret = new int[leftSorted.length + rightSorted.length];
+		int leftIndex = 0;
+		int rightIndex = 0;
+		for(int i = 0 ;i < ret.length; i++){
+			if(leftIndex == leftSorted.length){
+				ret[i] = rightSorted[rightIndex++];
+				continue;
+			}else if(rightIndex == rightSorted.length){
+				ret[i] = leftSorted[leftIndex++];
+				continue;
+			}
+			if(leftSorted[leftIndex] <= rightSorted[rightIndex]){
+				ret[i] = leftSorted[leftIndex++];
+			}else{
+				ret[i] = rightSorted[rightIndex++];
+			}
+		}
+		return ret;
+	}
 	public static void main(String[] args) {
 		int[] a = {1,4,6,7,23,3,5,8,12,11};
+		int[] b = {5,1,1,2,0,0};
 		MergeSort ms = new MergeSort();
-		ms.mergesort(a, 0, a.length - 1);
-		for(int i = 0; i < a.length; i++) {
-			System.out.print(a[i] + "\t");
+		int[]ret = ms.mergeSort(a);
+		for(int i = 0; i < ret.length; i++) {
+			System.out.print(ret[i] + "\t");
 		}
 	}
 }
