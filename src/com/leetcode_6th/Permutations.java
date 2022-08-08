@@ -1,5 +1,7 @@
 package com.leetcode_6th;
 
+import com.classicAlgorithm.Permutation;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +19,7 @@ public class Permutations {
     public void dfs(List<List<Integer>> ret, List<Integer> tmp, int[] flags){
         if(tmp.size() == size) {
             ret.add(new ArrayList<Integer>(tmp));
+            System.out.println(tmp);
             return;
         }
         for(int i = 0; i < size; i++){
@@ -29,5 +32,11 @@ public class Permutations {
             flags[i] = 0;
             tmp.remove(tmp.size() - 1);
         }
+    }
+
+    public static void main(String[] args) {
+        Permutations p = new Permutations();
+        int[] a = {1,1,2};
+        p.permute(a);
     }
 }
