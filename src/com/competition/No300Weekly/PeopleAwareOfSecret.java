@@ -55,7 +55,6 @@ public class PeopleAwareOfSecret {
             for(Integer idx: map.keySet()){
                 int cnt = map.get(idx) + 1;
                 if(cnt > forget){
-
                     del.add(idx);
                     continue;
                 }
