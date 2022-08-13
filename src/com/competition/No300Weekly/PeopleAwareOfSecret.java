@@ -73,6 +73,22 @@ public class PeopleAwareOfSecret {
         }
         return map.size();
     }
+    static final int MOD = (int) 1e9 + 7;
+
+    public int peopleAwareOfSecret2(int n, int delay, int forget) {
+        int[] f = new int[n];
+        f[0] = 1;
+        int cntB = 0;
+        for (int i = 0; i < n; i++) {
+            if (i + delay >= n) {
+                cntB = (cntB + f[i]) % MOD;
+            }
+            for (int j = i + delay; j < Math.min(i + forget, n); j++){
+                f[j] = (f[j] + f[i]) % MOD;
+            }
+        }
+        return (f[n - 1] + cntB) % MOD;
+    }
 
     public static void main(String[] args) {
         PeopleAwareOfSecret pas = new PeopleAwareOfSecret();

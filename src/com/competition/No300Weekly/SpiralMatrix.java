@@ -2,6 +2,8 @@ package com.competition.No300Weekly;
 
 import com.leetCode.CommonStructure.ListNode;
 
+import java.util.Arrays;
+
 /**
  * 2326. 螺旋矩阵 IV 显示英文描述
  * 通过的用户数4148
@@ -49,6 +51,7 @@ public class SpiralMatrix {
     int num = 0;
     int size;
     ListNode node;
+
     public int[][] spiralMatrix(int m, int n, ListNode head) {
         matrix = new int[m][n];
         this.m = m;
@@ -92,6 +95,34 @@ public class SpiralMatrix {
         num++;
     }
 
+    int[][] dirs = {{0, 1},{1,0},{0,-1},{-1,0}};
+    public int[][] spiralMatrix2(int m, int n, ListNode head) {
+        int[][] ret = new int[m][n];
+        for(int i = 0;i < m; i++){
+            for(int j = 0; j < n; j++){
+                ret[i][j] = -1;
+            }
+        }
+        int i = 0;
+        int j = 0;
+        int dir = 0;//方向
+        while(head!=null){
+            ret[i][j] = head.val;
+            head = head.next;
+            int[] d = dirs[dir];
+            int dx = d[0];
+            int dy = d[1];
+            if(i + dx < 0 || i + dx >= m || j + dy < 0 || j + dy >= n || ret[i+dx][j+dy] != -1){
+                dir = (dir + 1) % 4;
+            }
+            d = dirs[dir];
+            dx = d[0];
+            dy = d[1];
+            i += dx;
+            j += dy;
+        }
+        return ret;
+    }
     public static void main(String[] args) {
         SpiralMatrix sm = new SpiralMatrix();
         int m = 4;
