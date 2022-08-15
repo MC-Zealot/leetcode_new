@@ -42,7 +42,7 @@ public class CountPaths {
     int m;
     int n;
     int[][] grid;
-    int[][] f;
+    int[][] f; //从ij出发，有多少条路径。可以当做一个子问题
 
     public int countPaths(int[][] grid) {
         m = grid.length;

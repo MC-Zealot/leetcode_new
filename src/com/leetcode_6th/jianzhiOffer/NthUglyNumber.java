@@ -61,10 +61,34 @@ public class NthUglyNumber {
         return -1;
     }
 
+    public int nthUglyNumber2(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        int a = 1;
+        int b = 1;
+        int c = 1;
+        for(int i = 2; i < n + 1; i++){
+            int aTmp = dp[a] * 2;
+            int bTmp = dp[b] * 3;
+            int cTmp = dp[c] * 5;
+            int min = Math.min(cTmp, Math.min(aTmp, bTmp));
+            if(min == aTmp){
+                a++;
+            }
+            if(min == bTmp){
+                b++;
+            }
+            if(min == cTmp){
+                c++;
+            }
+            dp[i] = min;
+        }
+        return dp[n];
+    }
+
     public static void main(String[] args) {
         NthUglyNumber nn = new NthUglyNumber();
-        int ret = nn.nthUglyNumber(11);
-        System.out.println();
+        int ret = nn.nthUglyNumber2(10);
         System.out.println(ret);
     }
 }
