@@ -97,30 +97,34 @@ public class SmallestNumber {
     }
 
     /**
-     *
+     *  上升就出栈，下降就压栈
+     * 从1开始模拟答案一定是字典序最小的
      * @param pattern
      * @return
      */
     public String smallestNumber(String pattern) {
-        String ret= "";
-        int index = 1;
-        pattern+="I";
         Stack<Integer> stack = new Stack<>();
-        for(int i = 0; i < pattern.length(); i++){
-            String p = String.valueOf(pattern.charAt(i));
-            if(p.equals("D")){
-                stack.add(index);
-                index++;
-            }else{
-                ret+=String.valueOf(index);
-                index++;
-                while(stack.size()>0){
-                    int n = stack.pop();
-                    ret+=n;
+        StringBuilder res = new StringBuilder();
+        int num = 1;
+
+        for (int i = 0; i < pattern.length(); i++) {
+            if (pattern.charAt(i) == 'D') {
+                // 如果为下降，则将当前数字压入栈中
+                stack.push(num);
+            } else if (pattern.charAt(i) == 'I') {
+                res.append(num);
+                while (!stack.isEmpty()) {
+                    res.append(stack.pop());
                 }
             }
+            num++;
         }
-        return  ret;
+
+        stack.add(num);
+        while (!stack.isEmpty()) {
+            res.append(stack.pop());
+        }
+        return res.toString();
     }
     public static void main(String[] args) {
         SmallestNumber sn = new SmallestNumber();
