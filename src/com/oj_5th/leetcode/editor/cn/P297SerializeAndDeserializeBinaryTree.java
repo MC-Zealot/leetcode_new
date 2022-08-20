@@ -104,7 +104,7 @@ public class Codec {
             return null;
         }
         String[] ss = data.split(",");
-        Queue q = new LinkedList();
+        Queue<String> q = new LinkedList();
         for(int i = 0; i < ss.length; i++){
             q.add(ss[i]);
         }

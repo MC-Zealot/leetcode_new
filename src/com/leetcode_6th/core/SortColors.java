@@ -133,7 +133,7 @@ public class SortColors {
     /**
      * 两个指针分别用来交换 0 和 1。
      * 如果找到1，则与p1互换，p1++
-     * 如果找到0，则与p0互换， p0++
+     * 如果找到0，则与p0互换， p0++, p1++
      *      当p0 < p1的时候，p0++之后的p0肯定是1（如果不管的话，会把这个1替换到后边去），
      *      所以需要把i与p1进行互换（此时i为1，p1为2）
      * @param nums
@@ -169,26 +169,27 @@ public class SortColors {
     }
 
     /**
-     * 解题时，先定义两个指针red和blue，初始时red指向下标0，blue指向数组最后一位。然后再建立一个index从下标0开始循环数组的每一个数字。如果当前数字是0，那么交换当前下标与red指针指向的数字，red指针加一。此时能够保证red指针之前的数字都是0。
-     *
-     * 若当前数字是2，我们交换当前下标与blue指针指向的数字，然后blue下标减一，此时能够保证blue下标后面的数字都是2。这里需要注意一点，交换后，当前下标index值可能会变为0，1，2三种情况，因此我们还需要再次判断一下当前index，即需要index减一。
-     *
-     * 若当前数字是1，两个指针下标不变，index加一继续向后循环即可。
-     * https://leetcode.jp/leetcode-75-sort-colors-%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF%E5%88%86%E6%9E%90/
+     * 0 挪到最前面，2 挪到最后面就完事儿了
+     * 注意 2 挪完如果换出来的不是 1，那么指针要回退，因为 0 和 2 都是需要再次移动的
      * @param nums
      */
     public void sortColors6(int[] nums) {
-        int red=0,blue=nums.length-1;
-        for(int i=0;i<=blue;i++){
-            if(nums[i]==0){
-                nums[i]=nums[red];
-                nums[red]=0;
-                red++;
-            }else if(nums[i]==2){
-                nums[i]=nums[blue];
-                nums[blue]=2;
-                blue--;
-                i--;
+        int n = nums.length;
+        if (n < 2) {
+            return;
+        }
+        int p0 = 0, p2 = n - 1;
+        for (int i = 0; i <= p2; i++) {
+            if (nums[i] == 0) {
+                swap(nums, i, p0);
+                p0++;
+            }
+            if (nums[i] == 2) {
+                swap(nums, i, p2);
+                p2--;
+                if (nums[i] != 1) {
+                    i--;
+                }
             }
         }
     }
