@@ -35,46 +35,44 @@ public class SerializeandDeserializeBinaryTree {
     // Encodes a tree to a single string.
     public String serialize(TreeNode root) {
         Queue<Integer> queue = new LinkedList<>();
-        preIter(root, queue);
+        preTrav(root, queue);
         StringBuffer sb = new StringBuffer();
-        while(queue.size() > 0){
-            int val = queue.poll();
-            sb.append(val).append(",");
+        while(queue.size() >  0){
+            sb.append(queue.poll()).append(",");
         }
         return sb.substring(0, sb.length() - 1);
     }
-    public void preIter(TreeNode node, Queue<Integer> q){
+    public void preTrav(TreeNode node, Queue<Integer> queue){
         if(node == null){
-            q.add(10000);
+            queue.add(10000);
             return;
         }
-        q.add(node.val);
-        preIter(node.left, q);
-        preIter(node.right,q);
+        queue.add(node.val);
+        preTrav(node.left, queue);
+        preTrav(node.right, queue);
     }
-
 
     // Decodes your encoded data to tree.
     public TreeNode deserialize(String data) {
-        Queue<Integer> queue = new LinkedList<>();
         String[] ss = data.split(",");
+        Queue<Integer> queue = new LinkedList<>();
         for(int i = 0; i < ss.length; i++){
-            String str = ss[i];
-            queue.add(Integer.parseInt(str));
+            queue.add(Integer.parseInt(ss[i]));
         }
-        return preIterInitTree(queue);
+        TreeNode ret = genTree(queue);
+        return ret;
     }
-    public TreeNode preIterInitTree(Queue<Integer> queue){
+    public TreeNode genTree(Queue<Integer> queue){
         if(queue.size() == 0){
-            return null;
-        }else if(queue.peek() == 10000){
-            queue.poll();
             return null;
         }
         int val = queue.poll();
+        if(val == 10000){
+            return null;
+        }
         TreeNode node = new TreeNode(val);
-        node.left = preIterInitTree(queue);
-        node.right = preIterInitTree(queue);
+        node.left = genTree(queue);
+        node.right = genTree(queue);
         return node;
     }
 }

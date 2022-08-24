@@ -269,6 +269,41 @@ public class BinaryTree {
 		}
 		return ret;
 	}
+
+	/**
+	 * 中序遍历顺序： 左 中 右
+	 * 前序遍历顺序： 中 左 右
+	 * 后续遍历顺序： 左 右 中
+	 * 把节点放到栈里边
+	 * 每个节点有是否被遍历的属性
+	 * 如果没有被遍历到，则add其右，中，左
+	 * @param root
+	 * @return
+	 */
+	public static List<Integer> inorderTraversalNew2(TreeNode root) {
+		List<Integer> ret = new ArrayList<>();
+		if (root == null) {
+			return ret;
+		}
+		Stack<Pair<Boolean, TreeNode>> s = new Stack<>();
+		s.add(new Pair(false, root));
+		while (s.size() > 0) {
+			Pair<Boolean, TreeNode> p = s.pop();
+			Boolean flag = p.getKey();
+			TreeNode node = p.getValue();
+			if (node == null) {
+				continue;
+			}
+			if (flag == false) {
+				s.add(new Pair<>(false, node.right));
+				s.add(new Pair<>(true, node));
+				s.add(new Pair<>(false, node.left));
+			} else {
+				ret.add(node.val);
+			}
+		}
+		return ret;
+	}
 	public List<Integer> preorderTraversal(TreeNode root) {
 		List<Integer> ret = new ArrayList<>();
 		preOrder(root, ret);
