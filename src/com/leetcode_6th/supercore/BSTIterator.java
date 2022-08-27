@@ -1,8 +1,7 @@
-package com.leetcode_6th.core;
+package com.leetcode_6th.supercore;
 
 import com.leetCode.CommonStructure.TreeNode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Stack;
 

@@ -1,4 +1,4 @@
-package com.leetcode_6th.core;
+package com.leetcode_6th.supercore;
 
 /**
  * 704. Binary Search

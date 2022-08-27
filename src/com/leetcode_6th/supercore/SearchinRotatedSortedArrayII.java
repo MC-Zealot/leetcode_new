@@ -1,4 +1,4 @@
-package com.leetcode_6th.core;
+package com.leetcode_6th.supercore;
 
 /**
  * 33. Search in Rotated Sorted Array
@@ -34,16 +34,22 @@ package com.leetcode_6th.core;
  * nums is an ascending array that is possibly rotated.
  * -104 <= target <= 104
  */
-public class SearchinRotatedSortedArray {
-    public int search(int[] nums, int target) {
+public class SearchinRotatedSortedArrayII {
+    public boolean search(int[] nums, int target) {
         int left = 0;
         int right = nums.length - 1;
         while(left <= right){
             int mid = left + (right - left) /2;
-            if(nums[mid] == target) {
-                return mid;
-            }else if(nums[left] > nums[right] && nums[mid] >= nums[left]){
-                if(nums[mid] > target && nums[left] <= target){
+            if(nums[mid] == target){
+                return true;
+            }
+            if(nums[left] == nums[mid]){
+                left++;
+                continue;
+            }
+            //前半部分有序
+            if(nums[left] < nums[mid]){
+                if(nums[mid] > target && target >= nums[left]){
                     right = mid - 1;
                 }else{
                     left = mid + 1;
@@ -56,6 +62,6 @@ public class SearchinRotatedSortedArray {
                 }
             }
         }
-        return -1;
+        return false;
     }
 }

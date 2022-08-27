@@ -1,4 +1,4 @@
-package com.leetcode_6th.core;
+package com.leetcode_6th.supercore;
 
 /**
  * 705. 设计哈希集合
@@ -37,16 +37,16 @@ package com.leetcode_6th.core;
  */
 public class DesignHashSet {
     // 由于使用的是「链表」，这个值可以取得很小
-    Listnode[] nodes = new Listnode[10009];
+    ListNode[] nodes = new ListNode[10009];
 
     public void add(int key) {
         // 根据 key 获取哈希桶的位置
         int idx = getIndex(key);
         // 判断链表中是否已经存在
-        Listnode loc = nodes[idx];
-        Listnode tmp = loc;
+        ListNode loc = nodes[idx];
+        ListNode tmp = loc;
         if (loc != null) {
-            Listnode prev = null;
+            ListNode prev = null;
             while (tmp != null) {
                 if (tmp.key == key) {
                     return;
@@ -56,7 +56,7 @@ public class DesignHashSet {
             }
             tmp = prev;
         }
-        Listnode listnode = new Listnode(key);
+        ListNode listnode = new ListNode(key);
 
         // 头插法
         // node.next = loc;
@@ -72,9 +72,9 @@ public class DesignHashSet {
 
     public void remove(int key) {
         int idx = getIndex(key);
-        Listnode loc = nodes[idx];
+        ListNode loc = nodes[idx];
         if (loc != null) {
-            Listnode prev = null;
+            ListNode prev = null;
             while (loc != null) {
                 if (loc.key == key) {
                     if (prev != null) {
@@ -92,7 +92,7 @@ public class DesignHashSet {
 
     public boolean contains(int key) {
         int idx = getIndex(key);
-        Listnode loc = nodes[idx];
+        ListNode loc = nodes[idx];
         if (loc != null) {
             while (loc != null) {
                 if (loc.key == key) {
@@ -104,10 +104,10 @@ public class DesignHashSet {
         return false;
     }
 
-    static class Listnode {
+    static class ListNode {
         private int key;
-        private Listnode next;
-        private Listnode(int key) {
+        private ListNode next;
+        private ListNode(int key) {
             this.key = key;
         }
     }
@@ -127,4 +127,73 @@ public class DesignHashSet {
         set.add(2);
     }
 
+}
+class MyHashSet2 {
+    static class Listnode {
+        private int key;
+        private Listnode next;
+        private Listnode(int key) {
+            this.key = key;
+        }
+    }
+    Listnode[] nodes;
+    public MyHashSet2() {
+        nodes = new Listnode[10009];
+    }
+
+    public void add(int key) {
+        int index = getHashCode(key);
+        Listnode tmp = new Listnode(key);
+        if(nodes[index] == null){
+            nodes[index] = tmp;
+        }else{
+            Listnode pre = new Listnode(-1);
+            Listnode node = nodes[index];
+            pre.next = node;
+            while(node!=null){
+                if(node.key == key){
+                    return;
+                }
+                node = node.next;
+                pre = pre.next;
+            }
+            pre.next = tmp;
+        }
+    }
+
+    public void remove(int key) {
+        int index = getHashCode(key);
+        Listnode node = nodes[index];
+        Listnode pre = new Listnode(-1);
+        pre.next = node;
+        while(node!=null){
+            if(node.key == key){
+                if(pre.key == -1){
+                    nodes[index] = nodes[index].next;
+                }else{
+                    pre.next = node.next;
+                }
+
+                node.next = null;
+                return;
+            }
+            node = node.next;
+            pre = pre.next;
+        }
+    }
+
+    public boolean contains(int key) {
+        int index = getHashCode(key);
+        Listnode node = nodes[index];
+        while(node!=null){
+            if(node.key == key){
+                return true;
+            }
+            node = node.next;
+        }
+        return false;
+    }
+    public int getHashCode(int key){
+        return Integer.hashCode(key) % nodes.length;
+    }
 }

@@ -1,4 +1,4 @@
-package com.leetcode_6th.core;
+package com.leetcode_6th.supercore;
 
 import java.util.*;
 
@@ -158,8 +158,8 @@ public class TopologySort {
         Map<DirectedGraphNode, Integer> indegree = new HashMap();
         Queue<DirectedGraphNode> q = new LinkedList();
         for(DirectedGraphNode node : graph){
+            indegree.putIfAbsent(node, 0); // note: need to add node itself to start
             for(DirectedGraphNode nei : node.neighbors) {
-                indegree.putIfAbsent(node, 0); // note: need to add node itself to start
                 indegree.put(nei, indegree.getOrDefault(nei, 0) + 1);
             }
         }
@@ -175,6 +175,49 @@ public class TopologySort {
             }
         }
         return res;
+    }
+
+    /**
+     * map保存节点与入度
+     * 通过入度是否为0，是否加入到结果，
+     * 加入结果后，更新map
+     *
+     * @param graph
+     * @return
+     */
+    public ArrayList<DirectedGraphNode> topSort4(ArrayList<DirectedGraphNode> graph) {
+        // write your code here
+        ArrayList<DirectedGraphNode> ret = new ArrayList<DirectedGraphNode>();
+        Map<DirectedGraphNode, Integer> map = new HashMap<DirectedGraphNode, Integer>();
+        for(DirectedGraphNode node: graph){
+            map.put(node, 0);
+        }
+        for(DirectedGraphNode node: graph){
+            List<DirectedGraphNode> neighbors  = node.neighbors;
+            for(int j = 0; j < neighbors.size(); j++){
+                DirectedGraphNode neighbor = neighbors.get(j);
+                map.put(neighbor, map.get(neighbor) + 1);
+            }
+        }
+        Queue<DirectedGraphNode> queue = new LinkedList<DirectedGraphNode>();
+        for(DirectedGraphNode node: map.keySet()){
+            int inputcnt = map.get(node);
+            if(inputcnt == 0){
+                queue.add(node);
+            }
+        }
+        while(queue.size() > 0){
+            DirectedGraphNode node = queue.poll();
+            ret.add(node);
+            List<DirectedGraphNode> neighbors  = node.neighbors;
+            for(DirectedGraphNode nei: neighbors){
+                map.put(nei, map.get(nei) - 1);
+                if(map.get(nei) == 0){
+                    queue.add(nei);
+                }
+            }
+        }
+        return ret;
     }
     public static void main(String[] args) {
 
