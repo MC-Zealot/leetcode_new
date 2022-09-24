@@ -1,5 +1,8 @@
 package com.leetcode_6th.supercore;
 
+/**
+ * 树状数组
+ */
 public class NumArray {
     int[] tree;
     int[] nums;
