@@ -1,5 +1,10 @@
 package com.leetcode_6th.supercore;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.Map;
+import java.util.Queue;
+
 public class SortColors {
     /**
      *
@@ -193,6 +198,32 @@ public class SortColors {
             }
         }
     }
+
+//    public Map<String, ?> flatDic(Map<String, ?> dic){
+//        Map<String, ?> ret = new HashMap<>();
+//        Queue<Map<String, ?>> queue = new LinkedList<>();
+//        queue.add(dic);
+//        while(queue.size() > 0){
+//            Map map = queue.poll();
+//            for(Object key: map.keySet()){
+//                if(map.get(key) instanceof Map){
+//                    Map tmp = (Map)map.get(String.valueOf(key));
+//                    Map newTmp = transformMap(tmp, String.valueOf(key));
+//                    queue.add(newTmp);
+//                }else{
+//                    ret.put(String.valueOf(key), map.get(String.valueOf(key)));
+//                }
+//            }
+//        }
+//    }
+
+//    public Map transformMap(Map<String, ?> map, String key){
+//        Map<String, ?> ret = new HashMap<>();
+//        for(String oldKey: map.keySet()){
+//            ret.put(oldKey+"_"+ key, map.get(oldKey));
+//        }
+//        return ret;
+//    }
     public static void main(String[] args) {
 
     }

@@ -219,6 +219,52 @@ public class TopologySort {
         }
         return ret;
     }
+
+    public ArrayList<DirectedGraphNode> topSort5(ArrayList<DirectedGraphNode> graph) {
+        // write your code here
+        //计算每个节点的入度，并且保存到map中
+        ArrayList<DirectedGraphNode> ret = new ArrayList<DirectedGraphNode>();
+        Map<DirectedGraphNode, Integer> map = new HashMap<>();
+        for(int i = 0; i < graph.size(); i++){
+            DirectedGraphNode node = graph.get(i);
+            if(!map.containsKey(node)){
+                map.put(node, 0);
+            }
+            List<DirectedGraphNode> neighbors = node.neighbors;
+            for(int j = 0; j < neighbors.size(); j++){
+                DirectedGraphNode nei = neighbors.get(j);
+                if(map.containsKey(nei)){
+                    map.put(nei, map.get(nei)+1);
+                }else{
+                    map.put(nei, 1);
+                }
+            }
+        }
+        Queue<DirectedGraphNode> queue = new LinkedList<DirectedGraphNode>();
+        //找到入度是0的节点，放到队列中
+        for(DirectedGraphNode node: map.keySet()){
+            int num = map.get(node);
+            if(num == 0){
+                queue.add(node);
+            }
+        }
+
+        //从队列里拿出节点，放入返回结果中，并且更新剩余节点的入度
+        while(queue.size() > 0){
+            DirectedGraphNode node = queue.poll();
+            ret.add(node);
+            // map.remove(node);
+            List<DirectedGraphNode> neighbors = node.neighbors;
+            for(int i = 0; i < neighbors.size(); i++){
+                DirectedGraphNode n = neighbors.get(i);
+                map.put(n, map.get(n) - 1);
+                if(map.get(n) == 0){
+                    queue.add(n);
+                }
+            }
+        }
+        return ret;
+    }
     public static void main(String[] args) {
 
         DirectedGraphNode n0 = new DirectedGraphNode(0);
@@ -243,7 +289,7 @@ public class TopologySort {
         graph.add(n4);
         graph.add(n5);
         TopologySort ts = new TopologySort();
-        ArrayList<DirectedGraphNode> sorted = ts.topSort2(graph);
+        ArrayList<DirectedGraphNode> sorted = ts.topSort5(graph);
         for(DirectedGraphNode node: sorted){
             System.out.println(node.label);
         }
