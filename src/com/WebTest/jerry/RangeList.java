@@ -2,9 +2,10 @@ package com.WebTest.jerry;
 
 public class RangeList {
     class ListNode{
-        int rangeStart;
-        int rangeEnd;
-        ListNode next;
+        //ListNode represent range,
+        int rangeStart; // range start
+        int rangeEnd; // range end
+        ListNode next; // next range
         private ListNode(int rangeStart, int rangeEnd){
             this.rangeStart = rangeStart;
             this.rangeEnd = rangeEnd;
