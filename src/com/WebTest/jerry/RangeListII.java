@@ -5,12 +5,12 @@ public class RangeListII {
         int rangeStart;
         int rangeEnd;
         ListNode next;
-        public ListNode(int rangeStart, int rangeEnd){
+        private ListNode(int rangeStart, int rangeEnd){
             this.rangeStart = rangeStart;
             this.rangeEnd = rangeEnd;
         }
 
-        public ListNode unlink(ListNode element){
+        private ListNode unlink(ListNode element){
             if(element.rangeEnd - element.rangeStart <= 0){
                 return this;
             }
@@ -21,9 +21,9 @@ public class RangeListII {
                 return this;
             }
 
-            if(this.rangeStart == element.rangeStart && this.rangeEnd ==element.rangeEnd){
+            if(this.rangeStart == element.rangeStart && this.rangeEnd == element.rangeEnd){
                 return this.next;
-            }else if(this.rangeStart< element.rangeStart && this.rangeEnd >= element.rangeEnd){
+            }else if(this.rangeStart < element.rangeStart && this.rangeEnd >= element.rangeEnd){
                 ListNode leftNode = new ListNode(this.rangeStart, element.rangeStart);
                 ListNode rightNode = new ListNode(element.rangeEnd, this.rangeEnd);
                 rightNode.next = this.next;
@@ -43,7 +43,7 @@ public class RangeListII {
             }
         }
 
-        public ListNode link(ListNode element){
+        private ListNode link(ListNode element){
             if(this.rangeStart <= element.rangeStart && this.rangeEnd >= element.rangeEnd){
                 return this;
             }else if(this.rangeStart > element.rangeEnd){
@@ -55,7 +55,8 @@ public class RangeListII {
                 }else{
                     this.rangeStart = this.rangeStart < element.rangeStart? this.rangeStart: element.rangeStart;
                     this.rangeEnd = this.rangeEnd > element.rangeEnd? this.rangeEnd : element.rangeEnd;
-                    while(this.next!=null && this.rangeEnd >= this.next.rangeStart){
+
+                    while(this.next != null && this.rangeEnd >= this.next.rangeStart){
                         this.rangeEnd = this.next.rangeEnd;
                         this.next = this.next.next;
                     }
@@ -64,7 +65,7 @@ public class RangeListII {
             }
         }
     }
-    ListNode head = null;
+    private ListNode head = null;
     /**
      *  Adds a range to the list * @param {Array<number>} range - Array of two integers that specify beginning and end of range.
      */
@@ -127,5 +128,12 @@ public class RangeListII {
 
         rl.add(new int[]{-5, 0});
         rl.print();
+
+        rl.remove(new int[]{-3, 2});
+        rl.print();
+
+        rl.add(new int[]{100, 120});
+        rl.print();
+
     }
 }
