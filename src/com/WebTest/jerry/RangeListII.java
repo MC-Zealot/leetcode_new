@@ -66,7 +66,7 @@ public class RangeListII {
                     //if The two ranges overlap, combine them into new range
                     this.rangeStart = this.rangeStart < node.rangeStart? this.rangeStart: node.rangeStart;
                     this.rangeEnd = this.rangeEnd > node.rangeEnd? this.rangeEnd : node.rangeEnd;
-                    //if new range and next range overlap, combine them
+                    //if combined range and next range overlap, continue to combine them
                     while(this.next != null && this.rangeEnd >= this.next.rangeStart){
                         this.rangeEnd = this.next.rangeEnd;
                         this.next = this.next.next;
