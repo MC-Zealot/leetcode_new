@@ -112,51 +112,68 @@ public class RangeList {
     }
 
     /** * Prints out the list of ranges in the range list */
-    public void print() {
+    public String print() {
+        String ret = "";
         if(this.head == null){
             System.out.println("()");
-            return;
+            return "()";
         }
         ListNode node = this.head;
         while(node!=null){
             System.out.print("["+node.rangeStart +", " + node.rangeEnd +") ");
+            ret += "["+node.rangeStart +", " + node.rangeEnd +") ";
             node = node.next;
         }
         System.out.println();
+        return ret;
     }
 
     public static void main(String[] args) {
         // Example run
         RangeList rl = new RangeList();
         rl.add(new int[]{1,5});
-        rl.print(); // Should display: [1, 5)
+        String ret = rl.print(); // Should display: [1, 5)
 
         rl.add(new int[]{10, 20});
-        rl.print(); // Should display: [1, 5) [10, 20)
+        ret = rl.print(); // Should display: [1, 5) [10, 20)
 
         rl.add(new int[]{20, 20});
-        rl.print(); // Should display: [1, 5) [10, 20)
+        ret = rl.print(); // Should display: [1, 5) [10, 20)
 
         rl.add(new int[]{20, 21});
-        rl.print(); // Should display: [1, 5) [10, 21)
+        ret = rl.print(); // Should display: [1, 5) [10, 21)
 
         rl.add(new int[]{2, 4});
-        rl.print(); // Should display: [1, 5) [10, 21)
+        ret = rl.print(); // Should display: [1, 5) [10, 21)
 
         rl.add(new int[]{3, 8});
-        rl.print(); // Should display: [1, 8) [10, 21)
+        ret = rl.print(); // Should display: [1, 8) [10, 21)
+
+        rl.remove(new int[]{10, 10});
+        ret = rl.print(); // Should display: [1, 8) [10, 21)
+
+        rl.remove(new int[]{10, 11});
+        ret = rl.print(); // Should display: [1, 8) [11, 21)
+
+        rl.remove(new int[]{15, 17});
+        ret = rl.print(); // Should display: [1, 8) [11, 15) [17, 21)
+
+        rl.remove(new int[]{3, 19});
+        ret = rl.print(); // Should display: [1, 3) [19, 21)
 
         rl.remove(new int[]{5,7});
-        rl.print(); // Should display: [1, 5) [7, 8) [10, 21)
+        ret = rl.print(); // Should display: [1, 5) [7, 8) [10, 21)
 
         rl.add(new int[]{-5, 0});
-        rl.print(); // Should display: [-5, 0) [1, 5) [7, 8) [10, 21)
+        ret = rl.print(); // Should display: [-5, 0) [1, 5) [7, 8) [10, 21)
 
         rl.remove(new int[]{-3, 2});
-        rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21)
+        ret = rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21)
 
         rl.add(new int[]{100, 120});
-        rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21) [100, 120)
+        ret = rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21) [100, 120)
 
+        rl.add(new int[]{-100, 300});
+        ret = rl.print();
     }
 }
