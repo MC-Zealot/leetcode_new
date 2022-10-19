@@ -147,16 +147,16 @@ public class RangeList {
         rl.print(); // Should display: [1, 8) [10, 21)
 
         rl.remove(new int[]{5,7});
-        rl.print();
+        rl.print(); // Should display: [1, 5) [7, 8) [10, 21)
 
         rl.add(new int[]{-5, 0});
-        rl.print();
+        rl.print(); // Should display: [-5, 0) [1, 5) [7, 8) [10, 21)
 
         rl.remove(new int[]{-3, 2});
-        rl.print();
+        rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21)
 
         rl.add(new int[]{100, 120});
-        rl.print();
+        rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21) [100, 120)
 
     }
 }

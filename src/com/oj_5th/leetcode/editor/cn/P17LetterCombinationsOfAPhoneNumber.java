@@ -54,7 +54,7 @@ public class P17LetterCombinationsOfAPhoneNumber{
     public static void main(String[] args) {
         Solution solution = new P17LetterCombinationsOfAPhoneNumber().new Solution();
         // TO TEST
-        System.out.println(solution.letterCombinations(""));
+        System.out.println(solution.letterCombinations2("23"));
     }
     //[17] letter-combinations-of-a-phone-number
     //leetcode submit region begin(Prohibit modification and deletion)
@@ -89,7 +89,7 @@ class Solution {
 
     public void dfs(String digits, int index, List<String> ret, String tmp, Map<String, String[]> map) {
         if(tmp.length() == digits.length()){
-            ret.add(new String(tmp));
+            ret.add(tmp);
             return;
         }
         for (int i = 0; i < map.get(String.valueOf(digits.charAt(index))).length; i++) {
@@ -98,6 +98,40 @@ class Solution {
             tmp = tmp.substring(0, tmp.length() - 1);
         }
     }
+
+        public List<String> letterCombinations2(String digits) {
+            String[] ss = new String[10];
+            ss[2] = "abc";
+            ss[3] = "def";
+            ss[4] = "ghi";
+            ss[5] = "jkl";
+            ss[6] = "mno";
+            ss[7] = "pqrs";
+            ss[8] = "tuv";
+            ss[9] = "wxyz";
+            List<String> ret = new ArrayList<String>();
+            dfs(digits, ss, ret, "", 0);
+            return ret;
+        }
+        public void dfs(String digits, String[] ss, List<String> ret, String tmp, int index){
+
+            if(tmp.length() == digits.length()){
+                ret.add(tmp);
+                return;
+            }
+            if(index >= digits.length()){
+                return;
+            }
+            int digit = Integer.parseInt(String.valueOf(digits.charAt(index)));
+            String str = ss[digit];
+            for(int i = 0; i < str.length(); i++){
+                tmp+= String.valueOf(str.charAt(i));
+                dfs(digits, ss, ret, tmp, index + 1);
+                tmp = tmp.substring(0, tmp.length() - 1);
+            }
+        }
+
+
 }
 //leetcode submit region end(Prohibit modification and deletion)
 
