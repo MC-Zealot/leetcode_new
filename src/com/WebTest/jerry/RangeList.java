@@ -21,17 +21,17 @@ public class RangeList {
             data.add(new Pair(inputLowerBound, inputUpperBound));
             return;
         }
-        for(int i = 0; i < data.size(); i++){
+        for(int i = 0; i < data.size(); i++) {
             Pair<Integer, Integer> currRange = data.get(i);
             int dataLowerBound = currRange.getKey();
             int dataUpperBound = currRange.getValue();
 
             // input not overlap with curr but input is bigger -> insert after curr range
-            if (inputLowerBound > dataUpperBound) {
+            if(inputLowerBound > dataUpperBound) {
                 insertIndex = i + 1;
             }
             // input is strictly inside the current range -> expand input from both sides
-            else if (inputLowerBound > dataLowerBound && inputUpperBound < dataUpperBound) {
+            else if(inputLowerBound > dataLowerBound && inputUpperBound < dataUpperBound) {
                 input[0] = dataLowerBound;
                 input[1] = dataUpperBound;
                 if (removeStartIndex == null) {
@@ -42,40 +42,37 @@ public class RangeList {
                 }
             }
             // input overlaps with left of current range -> expand right of input
-            else if (inputLowerBound <= dataLowerBound &&
+            else if(inputLowerBound <= dataLowerBound &&
                     inputUpperBound >= dataLowerBound &&
                     inputUpperBound < dataUpperBound) {
                 input[1] = dataUpperBound;
-                if (removeStartIndex == null) {
+                if(removeStartIndex == null) {
                     removeStartIndex = i;
                     removeEndIndex = i;
-                }
-                else removeEndIndex = i;
+                } else removeEndIndex = i;
             }
             // input overlaps with right of current range -> expand left of input
-            else if (inputLowerBound > dataLowerBound &&
+            else if(inputLowerBound > dataLowerBound &&
                     inputLowerBound <= dataUpperBound &&
                     inputUpperBound >= dataUpperBound) {
                 input[0] = dataLowerBound;
-                if (removeStartIndex == null) {
+                if(removeStartIndex == null) {
                     removeStartIndex = i;
                     removeEndIndex = i;
-                }
-                else removeEndIndex = i;
+                } else removeEndIndex = i;
             }
             // input "wraps" the current range -> no change to input
-            else if (inputLowerBound <= dataLowerBound &&
+            else if(inputLowerBound <= dataLowerBound &&
                     inputUpperBound >= dataUpperBound) {
                 if (removeStartIndex == null) {
                     removeStartIndex = i;
                     removeEndIndex = i;
-                }
-                else removeEndIndex = i;
+                } else removeEndIndex = i;
             }
         }
 
         // remove overlapped elements
-        if (removeStartIndex != null && removeEndIndex != null){
+        if(removeStartIndex != null && removeEndIndex != null){
             List<Pair<Integer, Integer>> list = new ArrayList<>();
             for(int i = 0 ; i < removeStartIndex; i++){
                 list.add(data.get(i));
@@ -106,19 +103,19 @@ public class RangeList {
         List<Pair<Integer, Integer>> result = new ArrayList<>();
         Integer inputLowerBound = input[0];
         Integer inputUpperBound = input[1];
-        for (int i = 0; i < data.size(); i++) {
+        for(int i = 0; i < data.size(); i++) {
             Pair<Integer, Integer> currRange = data.get(i);
             int dataLowerBound = currRange.getKey();
             int dataUpperBound = currRange.getValue();
 
             // input is strictly inside the current range -> split range
-            if (inputLowerBound > dataLowerBound &&
+            if(inputLowerBound > dataLowerBound &&
                     inputUpperBound < dataUpperBound) {
                 result.add(new Pair<>(dataLowerBound, inputLowerBound));
                 result.add(new Pair<>(inputUpperBound, dataUpperBound));
             }
             // input overlaps with left of current range -> remove left of range
-            else if (inputLowerBound <= dataLowerBound &&
+            else if(inputLowerBound <= dataLowerBound &&
                     inputUpperBound > dataLowerBound &&
                     inputUpperBound < dataUpperBound) {
 //                currRange[0] = inputUpperBound;
@@ -126,14 +123,14 @@ public class RangeList {
                 result.add(new Pair<>(inputUpperBound, currRange.getValue()));
             }
             // input overlaps with right of current range -> remove right of range
-            else if (inputLowerBound > dataLowerBound &&
+            else if(inputLowerBound > dataLowerBound &&
                     inputLowerBound < dataUpperBound &&
                     inputUpperBound >= dataUpperBound) {
 //                currRange[1] = inputLowerBound;
                 result.add(new Pair<>(currRange.getKey(), inputLowerBound));
             }
             // no overlapping -> no need to change range
-            else if (inputLowerBound >= dataUpperBound ||
+            else if(inputLowerBound >= dataUpperBound ||
                     inputUpperBound <= dataLowerBound) {
                 result.add(currRange);
             }
@@ -206,20 +203,20 @@ public class RangeList {
         RangeList rl = new RangeList();
         rl.add(new int[]{20, 25});
         rl.add(new int[]{15, 20});
-        rl.print();
+        rl.print(); // Should display: [15, 25)
         rl.add(new int[]{10, 20});
-        rl.print();
+        rl.print(); // Should display: [10, 25)
     }
 
     public void test3(){
         RangeList rl = new RangeList();
         rl.add(new int[]{20, 25});
         rl.add(new int[]{25, 30});
-        rl.print();
+        rl.print(); // Should display: [20, 30)
         rl.add(new int[]{20, 30});
-        rl.print();
+        rl.print(); // Should display: [20, 30)
         rl.add(new int[]{25, 35});
-        rl.print();
+        rl.print(); // Should display: [20, 35)
     }
 
     public void test4(){
@@ -229,59 +226,59 @@ public class RangeList {
         rl.add(new int[]{32, 35});
         rl.add(new int[]{38, 40});
         rl.add(new int[]{20, 40});
-        rl.print();
+        rl.print(); // Should display: [20, 40)
 
         rl.add(new int[]{20, 25});
         rl.add(new int[]{23, 30});
         rl.add(new int[]{33, 40});
         rl.add(new int[]{10, 50});
-        rl.print();
+        rl.print(); // Should display: [10, 50)
     }
     public void test5(){
         RangeList rl = new RangeList();
         rl.add(new int[]{0, 100});
         rl.add(new int[]{0, 10});
-        rl.print();
+        rl.print(); // Should display: [0, 100)
 
         rl.add(new int[]{50, 70});
-        rl.print();
+        rl.print(); // Should display: [0, 100)
     }
     public void test6(){
         RangeList rl = new RangeList();
         rl.add(new int[]{0, 10});
         rl.add(new int[]{-5, 100});
-        rl.print();
+        rl.print(); // Should display: [-5, 100)
 
         rl.add(new int[]{-20, 200});
-        rl.print();
+        rl.print(); // Should display: [-20, 200)
     }
     public void test7(){
         RangeList rl = new RangeList();
         rl.add(new int[]{0, 100});
         rl.remove(new int[]{50, 51});
-        rl.print();
+        rl.print(); // Should display: [0, 50) [51, 100)
 
         rl.remove(new int[]{10, 20});
         rl.remove(new int[]{70, 80});
-        rl.print();
+        rl.print(); // Should display: [0, 10) [20, 50) [51, 70) [80, 100)
     }
     public void test8(){
         RangeList rl = new RangeList();
         rl.add(new int[]{0, 100});
         rl.remove(new int[]{80, 100});
-        rl.print();
+        rl.print(); // Should display: [0, 80)
 
         rl.remove(new int[]{60, 100});
-        rl.print();
+        rl.print(); // Should display: [0, 60)
     }
     public void test9(){
         RangeList rl = new RangeList();
         rl.add(new int[]{0, 100});
         rl.remove(new int[]{0, 20});
-        rl.print();
+        rl.print(); // Should display: [20, 100)
 
         rl.remove(new int[]{-20, 50});
-        rl.print();
+        rl.print(); // Should display: [50, 100)
     }
 
     public void test10(){
@@ -292,12 +289,12 @@ public class RangeList {
         rl.add(new int[]{60, 80});
         rl.add(new int[]{90, 100});
         rl.remove(new int[]{35, 65});
-        rl.print();
+        rl.print(); // Should display: [10, 15) [20, 25) [30, 35) [65, 80) [90, 100)
 
         rl.remove(new int[]{12, 32});
-        rl.print();
+        rl.print(); // Should display: [10, 12) [32, 35) [65, 80) [90, 100)
         rl.remove(new int[]{35, 70});
-        rl.print();
+        rl.print(); // Should display: [10, 12) [32, 35) [70, 80) [90, 100)
     }
 
     public void test11(){
@@ -307,13 +304,14 @@ public class RangeList {
         rl.add(new int[]{30, 35});
         rl.add(new int[]{40, 45});
         rl.remove(new int[]{10, 44});
-        rl.print();
+        rl.print(); // Should display: [44, 45)
 
         rl.remove(new int[]{44, 45});
-        rl.print();
+        rl.print(); // Should display:
     }
     public static void main(String[] args) {
         RangeList rl = new RangeList();
+        // test cases
         rl.test1();
 //        rl.test2();
 //        rl.test3();
