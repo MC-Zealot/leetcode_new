@@ -19,6 +19,7 @@ public class RangeList2 {
         int insertIndex = 0;
         if(data.size() == 0){
             data.add(new Pair(inputLowerBound, inputUpperBound));
+            return;
         }
         for(int i = 0; i < data.size(); i++){
             Pair<Integer, Integer> currRange = data.get(i);
@@ -75,12 +76,8 @@ public class RangeList2 {
 
         // remove overlapped elements
         if (removeStartIndex != null && removeEndIndex != null){
-//            data.splice(removeStartIndex, removeEndIndex - removeStartIndex + 1);
             List<Pair<Integer, Integer>> list = new ArrayList<>();
-            for(int i = 0 ;i < removeStartIndex; i++){
-                if(i == insertIndex){
-                    list.add(new Pair(inputLowerBound, inputUpperBound));
-                }
+            for(int i = 0 ; i < removeStartIndex; i++){
                 list.add(data.get(i));
             }
             for(int i = removeStartIndex + removeEndIndex - removeStartIndex + 1; i < data.size(); i++){
@@ -90,7 +87,15 @@ public class RangeList2 {
         }
 
         // insert input
-//        data.splice(insertIndex, 0, input);
+        List<Pair<Integer, Integer>> list = new ArrayList<>();
+        for(int i = 0; i < insertIndex; i++){
+            list.add(data.get(i));
+        }
+        list.add(new Pair(input[0], input[1]));
+        for(int i = insertIndex; i < data.size(); i++){
+            list.add(data.get(i));
+        }
+        data = new ArrayList<>(list);
     }
 
     public void remove(int[] input) {
@@ -139,14 +144,16 @@ public class RangeList2 {
     }
 
 
-    public void print(){
-        System.out.println(createOutputString());
+    public String print(){
+        String ret = createOutputString();
+        System.out.println(ret);
+        return ret;
     }
 
     public boolean checkIfInputIsValid(int[] range) {
         if(range.length != 2){
             return false;
-        }else if(range[1] < range[0]){
+        }else if(range[1] <= range[0]){
             return false;
         }
         return true;
@@ -161,5 +168,154 @@ public class RangeList2 {
             outputString += (i != data.size() - 1) ? str + " " : str;
         }
         return outputString;
+    }
+
+    public void test1(){
+        RangeList2 rl = new RangeList2();
+        rl.add(new int[]{1, 5});
+        rl.print();
+        rl.add(new int[]{10, 20});
+        String ret = rl.print(); // Should display: [1, 5) [10, 20)
+
+        rl.add(new int[]{20, 20});
+        ret = rl.print(); // Should display: [1, 5) [10, 20)
+
+        rl.add(new int[]{20, 21});
+        ret = rl.print(); // Should display: [1, 5) [10, 21)
+
+        rl.add(new int[]{2, 4});
+        ret = rl.print(); // Should display: [1, 5) [10, 21)
+
+        rl.add(new int[]{3, 8});
+        ret = rl.print(); // Should display: [1, 8) [10, 21)
+
+        rl.remove(new int[]{10, 10});
+        ret = rl.print(); // Should display: [1, 8) [10, 21)
+
+        rl.remove(new int[]{10, 11});
+        ret = rl.print(); // Should display: [1, 8) [11, 21)
+
+        rl.remove(new int[]{15, 17});
+        ret = rl.print(); // Should display: [1, 8) [11, 15) [17, 21)
+
+        rl.remove(new int[]{3, 19});
+        ret = rl.print(); // Should display: [1, 3) [19, 21)
+    }
+
+    public void test2(){
+        RangeList2 rl = new RangeList2();
+        rl.add(new int[]{20, 25});
+        rl.add(new int[]{15, 20});
+        rl.print();
+        rl.add(new int[]{10, 20});
+        rl.print();
+    }
+
+    public void test3(){
+        RangeList2 rl = new RangeList2();
+        rl.add(new int[]{20, 25});
+        rl.add(new int[]{25, 30});
+        rl.print();
+        rl.add(new int[]{20, 30});
+        rl.print();
+        rl.add(new int[]{25, 35});
+        rl.print();
+    }
+
+    public void test4(){
+        RangeList2 rl = new RangeList2();
+        rl.add(new int[]{20, 25});
+        rl.add(new int[]{27, 30});
+        rl.add(new int[]{32, 35});
+        rl.add(new int[]{38, 40});
+        rl.add(new int[]{20, 40});
+        rl.print();
+
+        rl.add(new int[]{20, 25});
+        rl.add(new int[]{23, 30});
+        rl.add(new int[]{33, 40});
+        rl.add(new int[]{10, 50});
+        rl.print();
+    }
+    public void test5(){
+        RangeList2 rl = new RangeList2();
+//        rl.test2();
+        rl.add(new int[]{0, 100});
+        rl.add(new int[]{0, 10});
+        rl.print();
+
+        rl.add(new int[]{50, 70});
+        rl.print();
+    }
+    public void test6(){
+        RangeList2 rl = new RangeList2();
+//        rl.test2();
+        rl.add(new int[]{0, 10});
+        rl.add(new int[]{-5, 100});
+        rl.print();
+
+        rl.add(new int[]{-20, 200});
+        rl.print();
+    }
+    public void test7(){
+        RangeList2 rl = new RangeList2();
+//        rl.test2();
+        rl.add(new int[]{0, 100});
+        rl.remove(new int[]{50, 51});
+        rl.print();
+
+        rl.remove(new int[]{10, 20});
+        rl.remove(new int[]{70, 80});
+        rl.print();
+    }
+    public void test8(){
+        RangeList2 rl = new RangeList2();
+//        rl.test2();
+        rl.add(new int[]{0, 100});
+        rl.remove(new int[]{80, 100});
+        rl.print();
+
+        rl.remove(new int[]{60, 100});
+        rl.print();
+    }
+    public void test9(){
+        RangeList2 rl = new RangeList2();
+//        rl.test2();
+        rl.add(new int[]{0, 100});
+        rl.remove(new int[]{0, 20});
+        rl.print();
+
+        rl.remove(new int[]{-20, 50});
+        rl.print();
+    }
+
+    public void test10(){
+        RangeList2 rl = new RangeList2();
+//        rl.test2();
+        rl.add(new int[]{10, 15});
+        rl.add(new int[]{20, 25});
+        rl.add(new int[]{30, 50});
+        rl.add(new int[]{60, 80});
+        rl.add(new int[]{90, 100});
+        rl.remove(new int[]{35, 65});
+        rl.print();
+
+        rl.remove(new int[]{12, 32});
+        rl.print();
+        rl.remove(new int[]{35, 70});
+        rl.print();
+    }
+    public static void main(String[] args) {
+        RangeList2 rl = new RangeList2();
+//        rl.test2();
+        rl.add(new int[]{10, 15});
+        rl.add(new int[]{20, 25});
+        rl.add(new int[]{30, 35});
+        rl.add(new int[]{40, 45});
+        rl.remove(new int[]{10, 44});
+        rl.print();
+
+        rl.remove(new int[]{44, 45});
+        rl.print();
     }
 }
