@@ -1,6 +1,6 @@
 package com.WebTest.jerry;
 
-public class RangeListTest {
+public class RangeList_bak {
     class ListNode{
         //ListNode represent range,
         int rangeStart; // range start
@@ -19,22 +19,18 @@ public class RangeListTest {
         private ListNode removeNode(ListNode node){
             if(node.rangeEnd - node.rangeStart <= 0){
                 // if node is empty, return current range
-                // 如果node为空，则不改变
                 return this;
             }else if(node.rangeStart > this.rangeEnd){
                 // if range start of the node is after current range, try next range recursively
-                //如果要删除的节点不在此刻的节点范围内，则遍历到下一个节点再试试。
                 if(this.next!= null){
                     this.next = this.next.removeNode(node);
                 }
                 return this;
             }else if(this.rangeStart == node.rangeStart && this.rangeEnd == node.rangeEnd){
                 //if the range exact match the current range, return next
-                //如果刚好匹配，则返回下一个节点（删掉当前节点）
                 return this.next;
             }else if(this.rangeStart < node.rangeStart && this.rangeEnd >= node.rangeEnd){
                 // if current range wraps the range, break into 2 range, and return left
-                //
                 ListNode leftNode = new ListNode(this.rangeStart, node.rangeStart);
                 ListNode rightNode = new ListNode(node.rangeEnd, this.rangeEnd);
                 rightNode.next = this.next;
@@ -81,14 +77,9 @@ public class RangeListTest {
                     this.rangeStart = this.rangeStart < node.rangeStart? this.rangeStart: node.rangeStart;
                     this.rangeEnd = this.rangeEnd > node.rangeEnd? this.rangeEnd : node.rangeEnd;
                     //if combined range and next range overlap, continue to combine them
-                    while(this.next != null){
-                        if(this.rangeEnd < this.next.rangeEnd && this.rangeEnd > this.next.rangeStart){
-                            this.rangeEnd = this.next.rangeEnd;
-                        }
-                        if(this.rangeEnd > this.next.rangeStart){
-                            this.next = this.next.next;
-                        }
-
+                    while(this.next != null && this.rangeEnd >= this.next.rangeStart){
+                        this.rangeEnd = this.next.rangeEnd;
+                        this.next = this.next.next;
                     }
                 }
                 return this;
@@ -137,12 +128,14 @@ public class RangeListTest {
         return ret;
     }
 
-    public void test1(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{1, 5});
-        rl.print();
+    public static void main(String[] args) {
+        // Example run
+        RangeList_bak rl = new RangeList_bak();
+        rl.add(new int[]{1,5});
+        String ret = rl.print(); // Should display: [1, 5)
+
         rl.add(new int[]{10, 20});
-        String ret = rl.print(); // Should display: [1, 5) [10, 20)
+        ret = rl.print(); // Should display: [1, 5) [10, 20)
 
         rl.add(new int[]{20, 20});
         ret = rl.print(); // Should display: [1, 5) [10, 20)
@@ -167,139 +160,20 @@ public class RangeListTest {
 
         rl.remove(new int[]{3, 19});
         ret = rl.print(); // Should display: [1, 3) [19, 21)
-    }
 
-    public void test2(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{20, 25});
-        rl.add(new int[]{15, 20});
-        rl.print();
-        rl.add(new int[]{10, 20});
-        rl.print();
-    }
+        rl.remove(new int[]{5,7});
+        ret = rl.print(); // Should display: [1, 5) [7, 8) [10, 21)
 
-    public void test3(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{20, 25});
-        rl.add(new int[]{25, 30});
-        rl.print();
-        rl.add(new int[]{20, 30});
-        rl.print();
-        rl.add(new int[]{25, 35});
-        rl.print();
-    }
+        rl.add(new int[]{-5, 0});
+        ret = rl.print(); // Should display: [-5, 0) [1, 5) [7, 8) [10, 21)
 
-    public void test4(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{20, 25});
-        rl.add(new int[]{27, 30});
-        rl.add(new int[]{32, 35});
-        rl.add(new int[]{38, 40});
-        rl.add(new int[]{20, 40});
-        rl.print();
+        rl.remove(new int[]{-3, 2});
+        ret = rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21)
 
-        rl.add(new int[]{20, 25});
-        rl.add(new int[]{23, 30});
-        rl.add(new int[]{33, 40});
-        rl.add(new int[]{10, 50});
-        rl.print();
-    }
-    public void test5(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{0, 100});
-        rl.add(new int[]{0, 10});
-        rl.print();
+        rl.add(new int[]{100, 120});
+        ret = rl.print(); // Should display: [-5, -3) [2, 5) [7, 8) [10, 21) [100, 120)
 
-        rl.add(new int[]{50, 70});
-        rl.print();
-    }
-    public void test6(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{0, 10});
-        rl.add(new int[]{-5, 100});
-        rl.print();
-
-        rl.add(new int[]{-20, 200});
-        rl.print();
-    }
-    public void test7(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{0, 100});
-        rl.remove(new int[]{50, 51});
-        rl.print();
-
-        rl.remove(new int[]{10, 20});
-        rl.remove(new int[]{70, 80});
-        rl.print();
-    }
-    public void test8(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{0, 100});
-        rl.remove(new int[]{80, 100});
-        rl.print();
-
-        rl.remove(new int[]{60, 100});
-        rl.print();
-    }
-    public void test9(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{0, 100});
-        rl.remove(new int[]{0, 20});
-        rl.print();
-
-        rl.remove(new int[]{-20, 50});
-        rl.print();
-    }
-
-    public void test10(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{10, 15});
-        rl.add(new int[]{20, 25});
-        rl.add(new int[]{30, 50});
-        rl.add(new int[]{60, 80});
-        rl.add(new int[]{90, 100});
-        rl.remove(new int[]{35, 65});
-        rl.print();
-
-        rl.remove(new int[]{12, 32});
-        rl.print();
-        rl.remove(new int[]{35, 70});
-        rl.print();
-    }
-
-    public void test11(){
-        RangeListTest rl = new RangeListTest();
-        rl.add(new int[]{10, 15});
-        rl.add(new int[]{20, 25});
-        rl.add(new int[]{30, 35});
-        rl.add(new int[]{40, 45});
-        rl.remove(new int[]{10, 44});
-        rl.print();
-
-        rl.remove(new int[]{44, 45});
-        rl.print();
-    }
-    public static void main(String[] args) {
-        // Example run
-        RangeListTest rl = new RangeListTest();
-//        rl.add(new int[]{1,20});
-//        String ret = rl.print();
-//        rl.remove(new int[]{4, 16});
-//        String ret1 = rl.print();
-////        rl.add(new int[]{0, 24});
-////        rl.print();
-//        rl.remove(new int[]{-100, 100});
-//        rl.print();
-        rl.test1();
-//        rl.test2();
-//        rl.test3();
-//        rl.test4();
-//        rl.test5();
-//        rl.test6();
-//        rl.test7();
-//        rl.test8();
-//        rl.test9();
-//        rl.test10();
-//        rl.test11();
+        rl.add(new int[]{-100, 300});
+        ret = rl.print();
     }
 }
